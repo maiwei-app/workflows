@@ -1,0 +1,40 @@
+name: CI Python
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        type: string
+        default: '3.12'
+      requirements-file:
+        type: string
+        default: 'requirements-ci.lock'
+      test-path:
+        type: string
+        default: 'tests/'
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install tools
+        run: pip install --only-binary ':all:' --require-hashes -r ${{ inputs.requirements-file }}
+
+      - name: Lint (ruff)
+        run: ruff check .
+
+      - name: Validate JSON schemas
+        run: |
+          find . -name "*.json" -not -path "./node_modules/*" -not -path "./.git/*" \
+            -exec python3 -m json.tool {} \; > /dev/null
+
+      - name: Unit tests (pytest)
+        run: pytest ${{ inputs.test-path }} -v
