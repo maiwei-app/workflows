@@ -35,9 +35,8 @@ jobs:
 
   sonar:
     needs: quality
-    uses: maiwei-app/workflows/.github/workflows/sonar-scan.yml@feat/ci-yaml-schema-linter
+    uses: maiwei-app/workflows/.github/workflows/sonar-scan.yml@main
     secrets:
       sonar-token: ${{ secrets.SONAR_TOKEN }}
     with:
       project-key: maiwei-app_workflows
-      sonar-organization: maiwei-app
