@@ -26,7 +26,7 @@ jobs:
           python-version: ${{ inputs.python-version }}
 
       - name: Install tools
-        run: pip install --only-binary ':all:' --require-hashes -r ${{ inputs.requirements-file }}
+        run: pip install -r ${{ inputs.requirements-file }}
 
       - name: Lint (ruff)
         run: ruff check .
