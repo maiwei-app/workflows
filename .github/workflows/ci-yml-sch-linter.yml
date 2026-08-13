@@ -1,0 +1,35 @@
+name: YAML Schema & Lint
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install yamllint
+        run: pip install yamllint
+
+      - name: Lint YAML syntax
+        run: yamllint -c relaxed .github/workflows/
+
+      - name: Install actionlint
+        run: |
+          mkdir -p /tmp/actionlint
+          curl -fsSL https://github.com/rhysd/actionlint/releases/download/v1.6.27/actionlint_linux_amd64.tar.gz | tar xz -C /tmp/actionlint/
+          echo "/tmp/actionlint" >> $GITHUB_PATH
+
+      - name: Validate GitHub Actions workflows
+        run: actionlint -fix=false .github/workflows/
+
+  sonar:
+    needs: quality
+    uses: maiwei-app/workflows/.github/workflows/sonar-scan.yml@main
+    secrets: inherit
+    with:
+      project-key: maiwei-app_workflows
