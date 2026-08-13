@@ -31,6 +31,4 @@ jobs:
           args: >
             -Dsonar.organization=${{ inputs.sonar-organization }}
             -Dsonar.projectKey=${{ inputs.project-key }}
-            -Dsonar.issue.ignore.multicriteria=s7637
-            -Dsonar.issue.ignore.multicriteria.s7637.ruleKey=S7637
-            -Dsonar.issue.ignore.multicriteria.s7637.resourceKey=.github/workflows/**
+            -Dsonar.exclusions=.github/**
