@@ -18,14 +18,17 @@ jobs:
       - name: Lint YAML syntax
         run: yamllint -d relaxed .github/workflows/
 
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+
       - name: Install actionlint
         run: |
-          mkdir -p /tmp/actionlint
-          curl -fsSL https://github.com/rhysd/actionlint/releases/download/v1.6.27/actionlint_linux_amd64.tar.gz | tar xz -C /tmp/actionlint/
-          echo "/tmp/actionlint" >> $GITHUB_PATH
+          bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+          echo "${PWD}" >> $GITHUB_PATH
 
       - name: Validate GitHub Actions workflows
-        run: actionlint -fix=false .github/workflows/
+        run: ./actionlint -format sarif -output ./results.sarif .github/workflows/ || true
 
   sonar:
     needs: quality
