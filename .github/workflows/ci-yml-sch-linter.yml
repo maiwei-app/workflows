@@ -10,7 +10,7 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@v4
 
       - name: Install yamllint
         run: |
@@ -19,7 +19,7 @@ jobs:
       - name: Lint YAML syntax
         run: yamllint -d relaxed .github/workflows/
 
-      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0'
 
@@ -39,7 +39,7 @@ jobs:
 
   sonar:
     needs: quality
-    uses: maiwei-app/workflows/.github/workflows/sonar-scan.yml@616995ca1b3e0028f22c4747580e1720fa4f6e09
+    uses: maiwei-app/workflows/.github/workflows/sonar-scan.yml@main
     secrets:
       sonar-token: ${{ secrets.SONAR_TOKEN }}
     with:
