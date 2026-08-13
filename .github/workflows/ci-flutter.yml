@@ -20,7 +20,9 @@ jobs:
           channel: ${{ inputs.flutter-version }}
 
       - name: Install dependencies
-        run: flutter pub get
+        run: |
+          flutter pub get
+          if [ ! -f pubspec.lock ]; then exit 1; fi
 
       - name: Analyze
         run: flutter analyze
