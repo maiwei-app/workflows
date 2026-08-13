@@ -10,21 +10,28 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Install yamllint
-        run: pip install yamllint
+        run: |
+          pip install 'yamllint==1.38.0' --only-binary :all:
 
       - name: Lint YAML syntax
         run: yamllint -d relaxed .github/workflows/
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
           ruby-version: '3.0'
 
       - name: Install actionlint
         run: |
-          bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+          curl -sL --proto =https --proto-redir =https \
+            https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash \
+            -o download-actionlint.bash
+          sha256sum -c <<< \
+            "a96d60132afb74536ff2b55cc784d5c55b0b57980d3d49f962f0b3871447d53a  download-actionlint.bash" \
+            || exit 1
+          bash download-actionlint.bash
           echo "${PWD}" >> $GITHUB_PATH
 
       - name: Validate GitHub Actions workflows
@@ -37,4 +44,3 @@ jobs:
       sonar-token: ${{ secrets.SONAR_TOKEN }}
     with:
       project-key: maiwei-app_workflows
-      sonar-organization: maiwei-app

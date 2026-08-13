@@ -21,12 +21,13 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@61a6322f88396a6271a6ee18c78e526c0b1731b7 # v4.7.0
         with:
           python-version: ${{ inputs.python-version }}
 
       - name: Install tools
-        run: pip install -r ${{ inputs.requirements-file }}
+        run: |
+          pip install -r ${{ inputs.requirements-file }} --only-binary :all: --require-hashes
 
       - name: Lint (ruff)
         run: ruff check .
