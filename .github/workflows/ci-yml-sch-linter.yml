@@ -26,7 +26,7 @@ jobs:
       - name: Install actionlint
         run: |
           curl -sL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash -o download-actionlint.bash
-          sha256sum -c <<< "5d4ecce7cf5db4e8f6d3c3b3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e3  download-actionlint.bash" || exit 1
+          sha256sum -c <<< "a96d60132afb74536ff2b55cc784d5c55b0b57980d3d49f962f0b3871447d53a  download-actionlint.bash" || exit 1
           bash download-actionlint.bash
           echo "${PWD}" >> $GITHUB_PATH
 
