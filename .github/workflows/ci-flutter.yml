@@ -20,9 +20,19 @@ jobs:
           channel: ${{ inputs.flutter-version }}
 
       - name: Install dependencies
+        run: flutter pub get --no-precompile
+
+      - name: Verify dependency lock
         run: |
-          flutter pub get
-          if [ ! -f pubspec.lock ]; then exit 1; fi
+          if [ ! -f pubspec.lock ]; then
+            echo "Error: pubspec.lock not found"
+            exit 1
+          fi
+          # Verify lock file is not empty and contains dependencies
+          if [ ! -s pubspec.lock ] || ! grep -q "packages:" pubspec.lock; then
+            echo "Error: pubspec.lock is empty or invalid"
+            exit 1
+          fi
 
       - name: Analyze
         run: flutter analyze
