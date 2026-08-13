@@ -14,7 +14,7 @@ jobs:
 
       - name: Install yamllint
         run: |
-          pip install yamllint --only-binary :all: --no-deps
+          pip install yamllint --only-binary :all:
 
       - name: Lint YAML syntax
         run: yamllint -d relaxed .github/workflows/
