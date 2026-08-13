@@ -39,7 +39,7 @@ jobs:
 
   sonar:
     needs: quality
-    uses: maiwei-app/workflows/.github/workflows/sonar-scan.yml@main
+    uses: maiwei-app/workflows/.github/workflows/sonar-scan.yml@616995ca1b3e0028f22c4747580e1720fa4f6e09
     secrets:
       sonar-token: ${{ secrets.SONAR_TOKEN }}
     with:
