@@ -10,21 +10,24 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@d632683dd7b4114ad314bca15257b5aee37047b1e # v4.1.1
 
       - name: Install yamllint
-        run: pip install yamllint
+        run: |
+          pip install --only-binary :all: yamllint
 
       - name: Lint YAML syntax
         run: yamllint -d relaxed .github/workflows/
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@a1e8e8a1d3f5e2d5e2c3b3e3f3e3f3e3 # v1.198.0
         with:
           ruby-version: '3.0'
 
       - name: Install actionlint
         run: |
-          bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+          curl -sL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash -o download-actionlint.bash
+          sha256sum -c <<< "5d4ecce7cf5db4e8f6d3c3b3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e3  download-actionlint.bash" || exit 1
+          bash download-actionlint.bash
           echo "${PWD}" >> $GITHUB_PATH
 
       - name: Validate GitHub Actions workflows
