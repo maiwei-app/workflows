@@ -6,6 +6,10 @@ on:
       project-key:
         type: string
         required: true
+      sonar-organization:
+        type: string
+        required: false
+        default: maiwei-app
     secrets:
       sonar-token:
         required: true
@@ -25,5 +29,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.sonar-token }}
         with:
           args: >
-            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.organization=${{ inputs.sonar-organization }}
             -Dsonar.projectKey=${{ inputs.project-key }}
