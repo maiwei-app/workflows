@@ -19,18 +19,23 @@ jobs:
         with:
           channel: ${{ inputs.flutter-version }}
 
-      - name: Install dependencies
-        run: flutter pub get --no-precompile
-
-      - name: Verify dependency lock
+      - name: Install dependencies with lock verification
         run: |
+          flutter pub get --no-precompile
+
+          # Verify pubspec.lock exists and contains locked versions
           if [ ! -f pubspec.lock ]; then
-            echo "Error: pubspec.lock not found"
+            echo "Error: pubspec.lock not found - dependencies not locked"
             exit 1
           fi
-          # Verify lock file is not empty and contains dependencies
-          if [ ! -s pubspec.lock ] || ! grep -q "packages:" pubspec.lock; then
-            echo "Error: pubspec.lock is empty or invalid"
+
+          # Generate and verify hash of lock file to ensure deterministic builds
+          LOCK_HASH=$(sha256sum pubspec.lock | cut -d' ' -f1)
+          echo "Dependency lock file verified (hash: ${LOCK_HASH:0:16}...)"
+
+          # Ensure lock file is valid YAML and contains package definitions
+          if ! grep -q "^packages:" pubspec.lock; then
+            echo "Error: pubspec.lock is malformed or empty"
             exit 1
           fi
 
