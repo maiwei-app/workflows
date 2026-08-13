@@ -38,7 +38,8 @@ jobs:
 
       - name: Install tools
         run: |
-          pip install -r ${{ inputs.requirements-file }} --only-binary :all: --require-hashes
+          pip install -r ${{ inputs.requirements-file }} \
+            --only-binary :all: --require-hashes
 
       - name: Lint (ruff)
         run: ruff check .
