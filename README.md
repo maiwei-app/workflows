@@ -12,6 +12,7 @@ separate `maiwei-app/.github` repo.
 | `ci-python.yml` | `quality` | ruff lint + JSON schema validation + pytest |
 | `ci-flutter.yml` | `quality` | flutter analyze + flutter test |
 | `ci-hugo.yml` | `quality` | strict Hugo build (fails on warnings) |
+| `ci-yml-sch-linter.yml` | `quality` | YAML syntax lint + GitHub Actions workflow validation (runs on this repo's workflows) |
 | `sonar-scan.yml` | `sonar` | CI-based SonarCloud scan (needs `SONAR_TOKEN` + `SONAR_ORGANIZATION`, both org-level) |
 
 ## Usage example
