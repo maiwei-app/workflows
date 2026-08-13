@@ -14,7 +14,7 @@ jobs:
 
       - name: Install yamllint
         run: |
-          pip install --only-binary :all: yamllint
+          pip install yamllint --only-binary :all: --no-deps
 
       - name: Lint YAML syntax
         run: yamllint -d relaxed .github/workflows/
@@ -25,7 +25,7 @@ jobs:
 
       - name: Install actionlint
         run: |
-          curl -sL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash -o download-actionlint.bash
+          curl -sL --proto-redir =https https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash -o download-actionlint.bash
           sha256sum -c <<< "a96d60132afb74536ff2b55cc784d5c55b0b57980d3d49f962f0b3871447d53a  download-actionlint.bash" || exit 1
           bash download-actionlint.bash
           echo "${PWD}" >> $GITHUB_PATH
