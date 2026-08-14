@@ -1,0 +1,43 @@
+name: Lint - No SHAs in Actions
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**/*.yml'
+      - '.github/workflows/**/*.yaml'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/**/*.yml'
+      - '.github/workflows/**/*.yaml'
+
+jobs:
+  no-shas:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for SHA pinning in workflows
+        run: |
+          echo "Scanning workflows for SHA pinning..."
+          FOUND_SHAS=0
+
+          for file in .github/workflows/*.{yml,yaml}; do
+            if [ -f "$file" ]; then
+              # Match patterns like @61a6322f... (40-char hex SHA)
+              if grep -E 'uses: .+@[a-f0-9]{40}' "$file"; then
+                echo "❌ ERROR: Found SHA-pinned action in $file"
+                FOUND_SHAS=1
+              fi
+            fi
+          done
+
+          if [ $FOUND_SHAS -eq 1 ]; then
+            echo ""
+            echo "Policy violation: Actions MUST be pinned with semantic version tags (v4, v4.2.1, etc), NOT SHAs."
+            echo "See CLAUDE.md for details."
+            exit 1
+          else
+            echo "✅ All actions use semantic version tags (no SHAs found)"
+          fi
