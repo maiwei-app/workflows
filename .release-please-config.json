@@ -3,7 +3,7 @@
   "release-type": "simple",
   "bump-minor-pre-major": true,
   "pull-request-header": ":robot: #changelog",
-  "pull-request-footer": "",
+  "pull-request-footer": " ",
   "packages": {
     ".": {
       "changelog-path": "CHANGELOG.md",
