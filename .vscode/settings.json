@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "maiwei-app",
+        "projectKey": "maiwei-app_workflows"
+    }
+}

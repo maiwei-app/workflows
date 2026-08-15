@@ -1,34 +1,5 @@
 # Changelog
 
-## [1.0.3](https://github.com/maiwei-app/workflows/compare/v1.0.2...v1.0.3) (2026-08-15)
-
-
-### Bug Fixes
-
-* document release PR header/footer customization in README ([#27](https://github.com/maiwei-app/workflows/issues/27)) ([0fbb075](https://github.com/maiwei-app/workflows/commit/0fbb075dcb0af93a63a82b00b0ac2674861a5668))
-
-## [1.0.2](https://github.com/maiwei-app/workflows/compare/v1.0.1...v1.0.2) (2026-08-15)
-
-
-### Bug Fixes
-
-* document release PR customization ([#23](https://github.com/maiwei-app/workflows/issues/23)) ([fdc9d9b](https://github.com/maiwei-app/workflows/commit/fdc9d9b85a7bcc26decee0da4943f5cf9cb23c9d))
-
-
-### Reverts
-
-* remove all release-please customization changes ([#25](https://github.com/maiwei-app/workflows/issues/25)) ([3ca08a5](https://github.com/maiwei-app/workflows/commit/3ca08a5ba5abde34cc6ab6771560a272c266ceef))
-
-## [1.0.1](https://github.com/maiwei-app/workflows/compare/v1.0.0...v1.0.1) (2026-08-15)
-
-
-### Bug Fixes
-
-* **ci:** map known JSON files to their real schema instead of guessing ([#16](https://github.com/maiwei-app/workflows/issues/16)) ([2ffa775](https://github.com/maiwei-app/workflows/commit/2ffa77592d6fd6b3a27275962205c509b006c580))
-* **ci:** real JSON schema validation and honest test tolerance ([#14](https://github.com/maiwei-app/workflows/issues/14)) ([4b9d637](https://github.com/maiwei-app/workflows/commit/4b9d6372c0742b4792cc2378d4cea46c79be9df0))
-* **release:** use release-please's actual config key names ([#17](https://github.com/maiwei-app/workflows/issues/17)) ([857ccfd](https://github.com/maiwei-app/workflows/commit/857ccfd7550df56ad527949f316b242ec4d9d30c))
-* **sonar:** stop excluding .github/** from analysis ([#18](https://github.com/maiwei-app/workflows/issues/18)) ([441176d](https://github.com/maiwei-app/workflows/commit/441176d137f7b36c5edca78b140d10ce5f5329a9))
-
 ## 1.0.0 (2026-08-15)
 
 

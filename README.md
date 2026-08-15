@@ -15,9 +15,6 @@ separate `maiwei-app/.github` repo.
 | `ci-yml-sch-linter.yml` | `quality` | YAML syntax lint + GitHub Actions workflow validation (runs on this repo's workflows) |
 | `sonar-scan.yml` | `sonar` | CI-based SonarCloud scan (needs `SONAR_TOKEN` + `SONAR_ORGANIZATION`, both org-level) |
 
-Release PRs opened by `release-please` in this repo use a custom header
-(`:robot: #changelog`) and no footer — see `.release-please-config.json`.
-
 ## Usage example
 
 ```yaml
