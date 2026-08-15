@@ -48,6 +48,12 @@ through under their original name (the org secret is `SONAR_TOKEN`). Map
 it explicitly as shown above, or the `sonar` job fails with "Secret
 sonar-token is required, but not provided".
 
+`sonar-scan.yml` applies no path exclusions — it analyzes the full
+consuming repo, `.github/**` included. There's no per-repo opt-out input;
+if a repo genuinely needs to exclude a path, that's a call to make
+explicitly in that repo's own Sonar project settings, not a default to
+inherit silently from here.
+
 ## `ci-python.yml`'s JSON schema validation
 
 Files matching a known name are validated against their real published
