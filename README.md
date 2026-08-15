@@ -4,8 +4,6 @@ Reusable GitHub Actions workflows for every repo in `maiwei-app`. Community
 health files (PR/issue templates, CODEOWNERS, SECURITY.md) live in the
 separate `maiwei-app/.github` repo.
 
-All release PRs are customized to remove third-party tool attribution.
-
 ## Available workflows
 
 | File | Job | Purpose |
