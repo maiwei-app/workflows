@@ -9,7 +9,7 @@ separate `maiwei-app/.github` repo.
 | File | Job | Purpose |
 |---|---|---|
 | `no-ai-attribution.yml` | `check` | Blocks commits/PRs with AI-attributed authorship (required org-wide) |
-| `ci-python.yml` | `quality` | ruff lint + JSON schema validation + pytest |
+| `ci-python.yml` | `quality` | ruff lint + JSON schema validation (see below) + pytest |
 | `ci-flutter.yml` | `quality` | flutter analyze + flutter test |
 | `ci-hugo.yml` | `quality` | strict Hugo build (fails on warnings) |
 | `ci-yml-sch-linter.yml` | `quality` | YAML syntax lint + GitHub Actions workflow validation (runs on this repo's workflows) |
@@ -36,10 +36,38 @@ jobs:
   sonar:
     needs: quality
     uses: maiwei-app/workflows/.github/workflows/sonar-scan.yml@main
-    secrets: inherit
     with:
       project-key: maiwei-app_<repo-name>
+    secrets:
+      sonar-token: ${{ secrets.SONAR_TOKEN }}
 ```
+
+`secrets: inherit` does **not** work for `sonar-scan.yml` — it requires a
+secret named exactly `sonar-token`, and `inherit` only passes secrets
+through under their original name (the org secret is `SONAR_TOKEN`). Map
+it explicitly as shown above, or the `sonar` job fails with "Secret
+sonar-token is required, but not provided".
+
+## `ci-python.yml`'s JSON schema validation
+
+Files matching a known name are validated against their real published
+schema (via `check-jsonschema --schemafile`); anything else falls back to
+syntax-only validation (`json.tool`) with an explicit log line saying so —
+never silently treated as if it were spec-validated. The mapping lives in
+`ci-python.yml`'s "Validate JSON against known schemas" step:
+
+| Filename | Schema |
+|---|---|
+| `.release-please-config.json` | `googleapis/release-please` `schemas/config.json` |
+| `.release-please-manifest.json` | `googleapis/release-please` `schemas/manifest.json` |
+| `.commitlintrc.json` | `json.schemastore.org/commitlintrc.json` |
+| `.markdownlint.json` | `json.schemastore.org/markdownlint.json` |
+
+When a repo adopts a new JSON config file that has a real schema (check
+[SchemaStore](https://www.schemastore.org/json/) first, or the tool's own
+repo), add it to this table **and** to the `schemas` map in
+`ci-python.yml` — otherwise it silently falls back to syntax-only
+validation instead of failing loudly, which defeats the point.
 
 ## Planned, not yet built
 
