@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.2](https://github.com/maiwei-app/workflows/compare/v1.0.1...v1.0.2) (2026-08-15)
+
+
+### Bug Fixes
+
+* document release PR customization ([#23](https://github.com/maiwei-app/workflows/issues/23)) ([fdc9d9b](https://github.com/maiwei-app/workflows/commit/fdc9d9b85a7bcc26decee0da4943f5cf9cb23c9d))
+
+
+### Reverts
+
+* remove all release-please customization changes ([#25](https://github.com/maiwei-app/workflows/issues/25)) ([3ca08a5](https://github.com/maiwei-app/workflows/commit/3ca08a5ba5abde34cc6ab6771560a272c266ceef))
+
 ## [1.0.1](https://github.com/maiwei-app/workflows/compare/v1.0.0...v1.0.1) (2026-08-15)
 
 
