@@ -2,6 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "release-type": "simple",
   "bump-minor-pre-major": true,
+  "pull-request-header": ":robot: #changelog",
+  "pull-request-footer": "",
   "packages": {
     ".": {
       "changelog-path": "CHANGELOG.md",
