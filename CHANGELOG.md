@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/maiwei-app/workflows/compare/v1.0.2...v1.0.3) (2026-08-15)
+
+
+### Bug Fixes
+
+* document release PR header/footer customization in README ([#27](https://github.com/maiwei-app/workflows/issues/27)) ([0fbb075](https://github.com/maiwei-app/workflows/commit/0fbb075dcb0af93a63a82b00b0ac2674861a5668))
+
 ## [1.0.2](https://github.com/maiwei-app/workflows/compare/v1.0.1...v1.0.2) (2026-08-15)
 
 
