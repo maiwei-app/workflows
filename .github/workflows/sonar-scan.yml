@@ -31,4 +31,3 @@ jobs:
           args: >
             -Dsonar.organization=${{ inputs.sonar-organization }}
             -Dsonar.projectKey=${{ inputs.project-key }}
-            -Dsonar.exclusions=.github/**
