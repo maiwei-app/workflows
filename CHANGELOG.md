@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.4](https://github.com/maiwei-app/workflows/compare/v1.0.3...v1.0.4) (2026-08-15)
+
+
+### Bug Fixes
+
+* use single-space footer to work around release-please empty-string bug ([#29](https://github.com/maiwei-app/workflows/issues/29)) ([b099017](https://github.com/maiwei-app/workflows/commit/b09901795dae9549447802f25ca7a9a662c903ac))
+
+
+### Reverts
+
+* restore repo state to 7aee6e4 (before release-please PR customization) ([#31](https://github.com/maiwei-app/workflows/issues/31)) ([f4b5dae](https://github.com/maiwei-app/workflows/commit/f4b5dae42908b80896f15cd0a8f83fd77b73a851))
+
 ## 1.0.0 (2026-08-15)
 
 
