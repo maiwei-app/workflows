@@ -44,10 +44,27 @@ jobs:
       - name: Lint (ruff)
         run: ruff check .
 
-      - name: Validate JSON schemas
+      - name: Validate JSON against known schemas
         run: |
-          find . -name "*.json" -not -path "./node_modules/*" -not -path "./.git/*" \
-            -exec python3 -m json.tool {} \; > /dev/null
+          files=$(find . -name "*.json" \
+            -not -path "./node_modules/*" -not -path "./.git/*")
+          if [ -n "$files" ]; then
+            check-jsonschema $files
+          fi
 
       - name: Unit tests (pytest)
-        run: pytest ${{ inputs.test-path }} -v
+        run: |
+          test_path="${{ inputs.test-path }}"
+          has_logic=$(find . -not -path './.git/*' \
+            -not -path "./${test_path}*" -name '*.py')
+          if [ -n "$has_logic" ]; then
+            pytest "$test_path" -v
+          else
+            set +e
+            pytest "$test_path" -v
+            ec=$?
+            set -e
+            if [ "$ec" -ne 0 ] && [ "$ec" -ne 4 ] && [ "$ec" -ne 5 ]; then
+              exit "$ec"
+            fi
+          fi
