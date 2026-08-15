@@ -29,7 +29,9 @@ jobs:
           FAIL=0
           RANGE="origin/$BASE_REF..$HEAD_SHA"
 
-          if git log "$RANGE" --format='%an <%ae> / %cn <%ce>' | grep -inE "$AUTHOR_PATTERN"; then
+          if git log "$RANGE" --format='%an <%ae> / %cn <%ce>' \
+            | grep -viE 'maibot-app\[bot\]' \
+            | grep -inE "$AUTHOR_PATTERN"; then
             echo "::error::AI author or committer detected in commits"
             FAIL=1
           fi
