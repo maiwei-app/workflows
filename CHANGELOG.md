@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.7](https://github.com/maiwei-app/workflows/compare/v1.0.6...v1.0.7) (2026-08-17)
+
+
+### Bug Fixes
+
+* document release-please PR header/footer config ([#38](https://github.com/maiwei-app/workflows/issues/38)) ([c44041a](https://github.com/maiwei-app/workflows/commit/c44041a9b3fe5f4270ffefd6189fa3f4e3742340))
+* flatten release-please config, drop packages nesting ([#36](https://github.com/maiwei-app/workflows/issues/36)) ([5c1bf4b](https://github.com/maiwei-app/workflows/commit/5c1bf4b9a726b2bbcf44af148456f91728f7fbeb))
+
 ## [1.0.6](https://github.com/maiwei-app/workflows/compare/v1.0.5...v1.0.6) (2026-08-17)
 
 
