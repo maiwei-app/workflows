@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.8](https://github.com/maiwei-app/workflows/compare/v1.0.7...v1.0.8) (2026-08-17)
+
+
+### Bug Fixes
+
+* remove release-type input to let action read config file ([#40](https://github.com/maiwei-app/workflows/issues/40)) ([a416b5d](https://github.com/maiwei-app/workflows/commit/a416b5da2a061d7c42e0208eaf13d825886046fd))
+* restore packages block, now required by fromManifest path ([#41](https://github.com/maiwei-app/workflows/issues/41)) ([9765fb6](https://github.com/maiwei-app/workflows/commit/9765fb60da5a7a3819f9757506984f39531e5cf5))
+
 ## [1.0.7](https://github.com/maiwei-app/workflows/compare/v1.0.6...v1.0.7) (2026-08-17)
 
 
