@@ -26,5 +26,3 @@ jobs:
           release-type: simple
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
-          pull-request-header: ":rocket: #Changelog"
-          pull-request-footer: "---\n\nGenerated via MaiBot. Merge this PR to tag the release."
