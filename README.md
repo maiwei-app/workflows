@@ -75,6 +75,15 @@ repo), add it to this table **and** to the `schemas` map in
 `ci-python.yml` — otherwise it silently falls back to syntax-only
 validation instead of failing loudly, which defeats the point.
 
+## `release.yml`'s release-please customization
+
+`.release-please-config.json` sets `pull-request-header` and
+`pull-request-footer` at the config root to replace release-please's
+default PR text (attribution footer, `:beep: :boop:` header) with
+project-specific wording. Both are root-level keys, not nested under
+`packages` — this repo has a single package (`.`), configured directly
+at the root.
+
 ## Planned, not yet built
 
 - `release-please.yml` — versioning/release automation
