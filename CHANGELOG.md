@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.9](https://github.com/maiwei-app/workflows/compare/v1.0.8...v1.0.9) (2026-08-17)
+
+
+### Bug Fixes
+
+* drop redundant leading separator from PR footer ([#43](https://github.com/maiwei-app/workflows/issues/43)) ([c6978cc](https://github.com/maiwei-app/workflows/commit/c6978ccaf297caaa1468edfd24f1eda0fb9cb2d4))
+
 ## [1.0.8](https://github.com/maiwei-app/workflows/compare/v1.0.7...v1.0.8) (2026-08-17)
 
 
