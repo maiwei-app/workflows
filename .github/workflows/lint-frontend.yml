@@ -6,6 +6,10 @@ on:
 jobs:
   quality:
     runs-on: ubuntu-latest
+    env:
+      # Packages are installed on-demand via npx; block their postinstall/
+      # lifecycle scripts from running (supply-chain hardening).
+      NPM_CONFIG_IGNORE_SCRIPTS: 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v4

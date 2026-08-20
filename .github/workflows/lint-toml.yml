@@ -14,7 +14,8 @@ jobs:
         run: |
           url="https://github.com/tamasfe/taplo/releases/download"
           url="${url}/0.9.3/taplo-full-linux-x86_64.gz"
-          curl -fsSL "$url" | gunzip -c > /usr/local/bin/taplo
+          curl -fsSL --proto '=https' --tlsv1.2 "$url" \
+            | gunzip -c > /usr/local/bin/taplo
           chmod +x /usr/local/bin/taplo
 
       - name: Validate TOML syntax
