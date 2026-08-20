@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/maiwei-app/workflows/compare/v1.0.9...v1.1.0) (2026-08-20)
+
+
+### Features
+
+* add lint-frontend, lint-toml and lint-yaml reusable workflows ([#45](https://github.com/maiwei-app/workflows/issues/45)) ([9dd7e3b](https://github.com/maiwei-app/workflows/commit/9dd7e3bf910dfa3f5f3bfb050909d89088e2837f))
+
 ## [1.0.9](https://github.com/maiwei-app/workflows/compare/v1.0.8...v1.0.9) (2026-08-17)
 
 
