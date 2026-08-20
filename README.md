@@ -45,13 +45,13 @@ jobs:
       sonar-token: ${{ secrets.SONAR_TOKEN }}
 ```
 
-`secrets: inherit` does **not** work for `sonar-scan.yml` — it requires a
+`secrets: inherit` does **not** work for `sonar-scan.yml`: it requires a
 secret named exactly `sonar-token`, and `inherit` only passes secrets
 through under their original name (the org secret is `SONAR_TOKEN`). Map
 it explicitly as shown above, or the `sonar` job fails with "Secret
 sonar-token is required, but not provided".
 
-`sonar-scan.yml` applies no path exclusions — it analyzes the full
+`sonar-scan.yml` applies no path exclusions: it analyzes the full
 consuming repo, `.github/**` included. There's no per-repo opt-out input;
 if a repo genuinely needs to exclude a path, that's a call to make
 explicitly in that repo's own Sonar project settings, not a default to
@@ -61,7 +61,7 @@ inherit silently from here.
 
 Files matching a known name are validated against their real published
 schema (via `check-jsonschema --schemafile`); anything else falls back to
-syntax-only validation (`json.tool`) with an explicit log line saying so —
+syntax-only validation (`json.tool`) with an explicit log line saying so,
 never silently treated as if it were spec-validated. The mapping lives in
 `ci-python.yml`'s "Validate JSON against known schemas" step:
 
@@ -75,7 +75,7 @@ never silently treated as if it were spec-validated. The mapping lives in
 When a repo adopts a new JSON config file that has a real schema (check
 [SchemaStore](https://www.schemastore.org/json/) first, or the tool's own
 repo), add it to this table **and** to the `schemas` map in
-`ci-python.yml` — otherwise it silently falls back to syntax-only
+`ci-python.yml`, otherwise it silently falls back to syntax-only
 validation instead of failing loudly, which defeats the point.
 
 ## `lint-frontend.yml`'s config fallback
@@ -96,12 +96,12 @@ placeholder tests are added to force the check green, same as `pytest` in
 `pull-request-footer` at the config root to replace release-please's
 default PR text (attribution footer, `:beep: :boop:` header) with
 project-specific wording. Both are root-level keys, not nested under
-`packages` — this repo has a single package (`.`), configured directly
+`packages`: this repo has a single package (`.`), configured directly
 at the root.
 
 ## Planned, not yet built
 
-- `release-please.yml` — versioning/release automation
-- `inline-comments.yml` — in-line code review comments
+- `release-please.yml`: versioning/release automation
+- `inline-comments.yml`: in-line code review comments
 
 Both are backlog for after the org migration is complete.
