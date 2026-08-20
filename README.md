@@ -13,6 +13,9 @@ separate `maiwei-app/.github` repo.
 | `ci-flutter.yml` | `quality` | flutter analyze + flutter test |
 | `ci-hugo.yml` | `quality` | strict Hugo build (fails on warnings) |
 | `ci-yml-sch-linter.yml` | `quality` | YAML syntax lint + GitHub Actions workflow validation (runs on this repo's workflows) |
+| `lint-frontend.yml` | `quality` | stylelint (CSS/SCSS) + eslint (browser JS) + vitest (only if test files exist) |
+| `lint-toml.yml` | `quality` | TOML syntax validation (taplo) |
+| `lint-yaml.yml` | `quality` | YAML syntax lint (yamllint) across the whole consuming repo, not just workflows |
 | `sonar-scan.yml` | `sonar` | CI-based SonarCloud scan (needs `SONAR_TOKEN` + `SONAR_ORGANIZATION`, both org-level) |
 
 ## Usage example
@@ -74,6 +77,18 @@ When a repo adopts a new JSON config file that has a real schema (check
 repo), add it to this table **and** to the `schemas` map in
 `ci-python.yml` — otherwise it silently falls back to syntax-only
 validation instead of failing loudly, which defeats the point.
+
+## `lint-frontend.yml`'s config fallback
+
+`stylelint` and `eslint` respect a config file already present in the consuming
+repo (`.stylelintrc.json`/`.stylelintrc`/`stylelint.config.js`,
+`.eslintrc.json`/`.eslintrc.js`/`eslint.config.js`). If none exists, the
+workflow falls back to a minimal default (`stylelint-config-standard-scss` for
+CSS/SCSS, `eslint:recommended` with a browser environment for JS) — same
+never-silently-skip-validation principle as the JSON schema fallback below.
+JS unit tests (`vitest`) only run if `*.test.js`/`*.spec.js` files exist; no
+placeholder tests are added to force the check green, same as `pytest` in
+`ci-python.yml`.
 
 ## `release.yml`'s release-please customization
 
