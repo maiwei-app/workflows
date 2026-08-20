@@ -20,7 +20,7 @@ jobs:
         run: |
           mapfile -d '' files < <(find . -name '*.toml' -not -path './.git/*' -print0)
           if [ "${#files[@]}" -eq 0 ]; then
-            echo "No .toml files found — nothing to lint"
+            echo "No .toml files found, nothing to lint"
             exit 0
           fi
           taplo check "${files[@]}"

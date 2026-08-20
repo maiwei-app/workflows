@@ -84,7 +84,7 @@ validation instead of failing loudly, which defeats the point.
 repo (`.stylelintrc.json`/`.stylelintrc`/`stylelint.config.js`,
 `.eslintrc.json`/`.eslintrc.js`/`eslint.config.js`). If none exists, the
 workflow falls back to a minimal default (`stylelint-config-standard-scss` for
-CSS/SCSS, `eslint:recommended` with a browser environment for JS) — same
+CSS/SCSS, `eslint:recommended` with a browser environment for JS), same
 never-silently-skip-validation principle as the JSON schema fallback below.
 JS unit tests (`vitest`) only run if `*.test.js`/`*.spec.js` files exist; no
 placeholder tests are added to force the check green, same as `pytest` in
