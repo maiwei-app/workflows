@@ -18,20 +18,23 @@ jobs:
       - name: Lint CSS/SCSS (stylelint)
         run: |
           mapfile -d '' files < <(find . -regextype posix-extended \
-            -regex '.*\.(css|scss)' -not -path './.git/*' -not -path './node_modules/*' -print0)
+            -regex '.*\.(css|scss)' \
+            -not -path './.git/*' -not -path './node_modules/*' -print0)
           if [ "${#files[@]}" -eq 0 ]; then
             echo "No CSS/SCSS files found, skipping stylelint"
             exit 0
           fi
-          # Respect a repo-provided config; otherwise fall back to a sane default
-          # (same fallback pattern as ci-python.yml's JSON schema validation).
+          # Respect a repo-provided config; otherwise fall back to a sane
+          # default (same pattern as ci-python.yml's JSON schema validation).
           config_arg=()
-          if [ ! -f .stylelintrc.json ] && [ ! -f .stylelintrc ] && [ ! -f stylelint.config.js ]; then
+          if [ ! -f .stylelintrc.json ] && [ ! -f .stylelintrc ] \
+            && [ ! -f stylelint.config.js ]; then
             cat > /tmp/.stylelintrc.json <<'EOF'
           {"extends": "stylelint-config-standard-scss"}
           EOF
             config_arg=(--config /tmp/.stylelintrc.json)
-            echo "No stylelint config in repo, using default stylelint-config-standard-scss"
+            echo "No stylelint config in repo, using default" \
+              "stylelint-config-standard-scss"
           fi
           npx --yes -p stylelint@16 -p stylelint-config-standard-scss@13 \
             stylelint "${config_arg[@]}" "${files[@]}"
@@ -45,21 +48,29 @@ jobs:
             exit 0
           fi
           config_arg=()
-          if [ ! -f .eslintrc.json ] && [ ! -f .eslintrc.js ] && [ ! -f eslint.config.js ]; then
+          if [ ! -f .eslintrc.json ] && [ ! -f .eslintrc.js ] \
+            && [ ! -f eslint.config.js ]; then
             cat > /tmp/.eslintrc.json <<'EOF'
-          {"env": {"browser": true, "es2021": true}, "extends": "eslint:recommended", "parserOptions": {"ecmaVersion": "latest"}}
+          {
+            "env": {"browser": true, "es2021": true},
+            "extends": "eslint:recommended",
+            "parserOptions": {"ecmaVersion": "latest"}
+          }
           EOF
             config_arg=(--no-eslintrc --config /tmp/.eslintrc.json)
-            echo "No eslint config in repo, using default eslint:recommended (browser env)"
+            echo "No eslint config in repo, using default" \
+              "eslint:recommended (browser env)"
           fi
           npx --yes eslint@8 "${config_arg[@]}" "${files[@]}"
 
       - name: JS unit tests (vitest)
         run: |
-          mapfile -d '' tests < <(find . -type f \( -name '*.test.js' -o -name '*.spec.js' \) \
+          mapfile -d '' tests < <(find . -type f \
+            \( -name '*.test.js' -o -name '*.spec.js' \) \
             -not -path './.git/*' -not -path './node_modules/*' -print0)
           if [ "${#tests[@]}" -eq 0 ]; then
-            echo "No JS test files found, skipping vitest (no placeholder tests added)"
+            echo "No JS test files found, skipping vitest" \
+              "(no placeholder tests added)"
             exit 0
           fi
           npx --yes -p vitest@2 -p jsdom@25 vitest run --environment jsdom

@@ -12,13 +12,15 @@ jobs:
 
       - name: Install taplo
         run: |
-          curl -fsSL https://github.com/tamasfe/taplo/releases/download/0.9.3/taplo-full-linux-x86_64.gz \
-            | gunzip -c > /usr/local/bin/taplo
+          url="https://github.com/tamasfe/taplo/releases/download"
+          url="${url}/0.9.3/taplo-full-linux-x86_64.gz"
+          curl -fsSL "$url" | gunzip -c > /usr/local/bin/taplo
           chmod +x /usr/local/bin/taplo
 
       - name: Validate TOML syntax
         run: |
-          mapfile -d '' files < <(find . -name '*.toml' -not -path './.git/*' -print0)
+          mapfile -d '' files < <(find . -name '*.toml' \
+            -not -path './.git/*' -print0)
           if [ "${#files[@]}" -eq 0 ]; then
             echo "No .toml files found, nothing to lint"
             exit 0
