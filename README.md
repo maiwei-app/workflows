@@ -11,7 +11,7 @@ separate `maiwei-app/.github` repo.
 | `no-ai-attribution.yml` | `check` | Blocks commits/PRs with AI-attributed authorship (required org-wide) |
 | `ci-python.yml` | `quality` | ruff lint + JSON schema validation (see below) + pytest |
 | `ci-flutter.yml` | `quality` | flutter analyze + flutter test |
-| `ci-hugo.yml` | `quality` | strict Hugo build (fails on warnings) |
+| `ci-hugo.yml` | `quality` | strict Hugo build (fails on warnings) — site or theme mode, see below |
 | `ci-yml-sch-linter.yml` | `quality` | YAML syntax lint + GitHub Actions workflow validation (runs on this repo's workflows) |
 | `lint-frontend.yml` | `quality` | stylelint (CSS/SCSS) + eslint (browser JS) + vitest (only if test files exist) |
 | `lint-toml.yml` | `quality` | TOML syntax validation (taplo) |
@@ -56,6 +56,41 @@ consuming repo, `.github/**` included. There's no per-repo opt-out input;
 if a repo genuinely needs to exclude a path, that's a call to make
 explicitly in that repo's own Sonar project settings, not a default to
 inherit silently from here.
+
+## `ci-hugo.yml`'s site vs theme mode
+
+Hugo resolves a theme by matching its directory name (`themes/<name>`), so a
+theme repo can't just be checked out and built at the root like a normal
+site — it needs its own build path. `ci-hugo.yml` covers both:
+
+- **Site mode** (default, no `theme-name` input): checks out at the repo
+  root, submodules included, builds with `hugo --gc --minify
+  --panicOnWarning`. This is what any normal Hugo site (e.g. a future
+  `colomr.cc` or `maiwei.app` landing) uses as-is.
+- **Theme mode** (`theme-name` set): checks out into
+  `themes/<theme-name>`, builds `themes/<theme-name>/exampleSite` instead
+  of the root, and runs a generated-CSS sanity check — the build can
+  succeed while producing broken/empty CSS if the SCSS pipeline chokes on
+  something. `min-css-bytes` (default `10000`) catches an empty-ish
+  output; `verify-css-selectors` (comma-separated, optional) additionally
+  asserts specific selectors are present, for a theme's own design-system
+  tokens.
+
+```yaml
+# site mode
+quality:
+  uses: maiwei-app/workflows/.github/workflows/ci-hugo.yml@main
+  with:
+    hugo-version: '0.164.0'
+
+# theme mode
+quality:
+  uses: maiwei-app/workflows/.github/workflows/ci-hugo.yml@main
+  with:
+    hugo-version: '0.164.0'
+    theme-name: colomr-v1
+    verify-css-selectors: '.site-header,.ftabs__tab,--color-primary'
+```
 
 ## `ci-python.yml`'s JSON schema validation
 
