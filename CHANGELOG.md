@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/maiwei-app/workflows/compare/v1.1.0...v1.2.0) (2026-08-24)
+
+
+### Features
+
+* add theme mode to ci-hugo.yml ([#48](https://github.com/maiwei-app/workflows/issues/48)) ([8561a08](https://github.com/maiwei-app/workflows/commit/8561a08d4a03fb08e8f2d04125dc6c0ec7a53609))
+
 ## [1.1.0](https://github.com/maiwei-app/workflows/compare/v1.0.9...v1.1.0) (2026-08-20)
 
 
