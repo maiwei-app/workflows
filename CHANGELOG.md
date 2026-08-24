@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/maiwei-app/workflows/compare/v1.2.0...v1.2.1) (2026-08-24)
+
+
+### Bug Fixes
+
+* exempt dependabot[bot] from the AI-authorship check ([#50](https://github.com/maiwei-app/workflows/issues/50)) ([8861be1](https://github.com/maiwei-app/workflows/commit/8861be1d6825a39b68a1195d17c757ff8d192776))
+
 ## [1.2.0](https://github.com/maiwei-app/workflows/compare/v1.1.0...v1.2.0) (2026-08-24)
 
 
