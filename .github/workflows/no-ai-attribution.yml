@@ -30,8 +30,11 @@ jobs:
           FAIL=0
           RANGE="origin/$BASE_REF..$HEAD_SHA"
 
+          # Known-legitimate bots exempted from the generic [bot] catch-all:
+          # maibot-app (this org's own PR-approval-flow bot) and
+          # dependabot (GitHub's own dependency-update bot).
           if git log "$RANGE" --format='%an <%ae> / %cn <%ce>' \
-            | grep -viE 'maibot-app\[bot\]' \
+            | grep -viE 'maibot-app\[bot\]|dependabot\[bot\]' \
             | grep -inE "$AUTHOR_PATTERN"; then
             echo "::error::AI author or committer detected in commits"
             FAIL=1
