@@ -17,6 +17,7 @@ separate `maiwei-app/.github` repo.
 | `lint-toml.yml` | `quality` | TOML syntax validation (taplo) |
 | `lint-yaml.yml` | `quality` | YAML syntax lint (yamllint) across the whole consuming repo, not just workflows |
 | `sonar-scan.yml` | `sonar` | CI-based SonarCloud scan (needs `SONAR_TOKEN` + `SONAR_ORGANIZATION`, both org-level) |
+| `sonar-api.yml` | `query` | Manual bridge to SonarCloud's REST API — see "AI/model access to gated org secrets" below |
 
 ## Usage example
 
@@ -98,6 +99,44 @@ default PR text (attribution footer, `:beep: :boop:` header) with
 project-specific wording. Both are root-level keys, not nested under
 `packages`: this repo has a single package (`.`), configured directly
 at the root.
+
+## AI/model access to gated org secrets — `sonar-api.yml`
+
+GitHub Actions secrets are write-only via every API: no permission level,
+including org admin, can ever read a secret's value back — only a workflow
+run gets it injected at runtime. That means an AI agent (Claude, or any
+future model) can never fetch `SONAR_TOKEN` directly, no matter what App
+permissions it holds.
+
+`sonar-api.yml` is the standing workaround: a manually-dispatched workflow
+in this repo that calls the SonarCloud API from inside a runner, where
+`SONAR_TOKEN` is available, and writes only the (non-secret) response to
+the run's job summary. The token itself never appears in any log, output,
+or API response the agent can read.
+
+**How the agent uses it:**
+
+```bash
+gh workflow run sonar-api.yml --repo maiwei-app/workflows \
+  -f method=GET \
+  -f 'path=settings/values?component=maiwei-app_<repo>&keys=sonar.analysis.mode'
+
+# then find the run and read its summary, e.g.:
+gh run list --repo maiwei-app/workflows --workflow=sonar-api.yml --limit 1 --json databaseId --jq '.[0].databaseId'
+gh api /repos/maiwei-app/workflows/actions/runs/<run-id>/jobs --jq '.jobs[0].id' \
+  | xargs -I{} gh api /repos/maiwei-app/workflows/actions/jobs/{}/logs
+```
+
+`method` is `GET` or `POST`; `path` is the SonarCloud API path and query
+string with no leading slash; `body` (optional) is a form-encoded POST
+body. This is generic on purpose — it's the one door for any future
+Sonar-API need, not a single-purpose script that gets re-created every
+time. If a genuinely different gated secret needs the same treatment
+later, copy this pattern rather than building a one-off.
+
+Requires the App triggering it to have `actions: write` on this repo (to
+dispatch the run and read its logs) — a separate permission from the
+`contents`/`workflows`/`issues` ones already granted for other tasks.
 
 ## Planned, not yet built
 

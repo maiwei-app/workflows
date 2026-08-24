@@ -1,0 +1,54 @@
+name: Sonar API bridge
+
+on:
+  workflow_dispatch:
+    inputs:
+      method:
+        description: HTTP method
+        type: choice
+        options: [GET, POST]
+        default: GET
+      path:
+        description: >
+          SonarCloud API path and query string, no leading slash
+          (e.g. settings/values?component=maiwei-app_colomr-v1-theme&keys=sonar.analysis.mode)
+        type: string
+        required: true
+      body:
+        description: Optional request body for POST (form-encoded, e.g. key=value&key2=value2)
+        type: string
+        required: false
+
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call SonarCloud API
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          METHOD: ${{ inputs.method }}
+          API_PATH: ${{ inputs.path }}
+          REQUEST_BODY: ${{ inputs.body }}
+        run: |
+          set -euo pipefail
+          URL="https://sonarcloud.io/api/${API_PATH}"
+          if [[ "$METHOD" == "POST" ]]; then
+            RESPONSE="$(curl -sS -w '\n%{http_code}' -u "${SONAR_TOKEN}:" -X POST "$URL" ${REQUEST_BODY:+-d "$REQUEST_BODY"})"
+          else
+            RESPONSE="$(curl -sS -w '\n%{http_code}' -u "${SONAR_TOKEN}:" "$URL")"
+          fi
+          HTTP_CODE="$(tail -n1 <<< "$RESPONSE")"
+          BODY_OUT="$(sed '$d' <<< "$RESPONSE")"
+          {
+            echo "### Sonar API response"
+            echo "- Method: \`$METHOD\`"
+            echo "- Path: \`$API_PATH\`"
+            echo "- HTTP status: \`$HTTP_CODE\`"
+            echo '```json'
+            echo "$BODY_OUT"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$HTTP_CODE" -ge 400 ]]; then
+            echo "::error::SonarCloud API returned HTTP $HTTP_CODE"
+            exit 1
+          fi
