@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/maiwei-app/workflows/compare/v1.2.1...v1.3.0) (2026-08-31)
+
+
+### Features
+
+* pass python coverage to sonar ([#57](https://github.com/maiwei-app/workflows/issues/57)) ([66b7145](https://github.com/maiwei-app/workflows/commit/66b714515f1705dd175d2c0ea2e96edb4cf54d21))
+
 ## [1.2.1](https://github.com/maiwei-app/workflows/compare/v1.2.0...v1.2.1) (2026-08-24)
 
 
