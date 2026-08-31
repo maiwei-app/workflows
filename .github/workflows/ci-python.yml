@@ -12,6 +12,15 @@ on:
       test-path:
         type: string
         default: 'tests/'
+      coverage:
+        # Requires pytest-cov in the caller's requirements file. Leave off for
+        # repos without tests: the report would be empty and Sonar would read
+        # it as 0% coverage.
+        type: boolean
+        default: false
+      coverage-artifact:
+        type: string
+        default: 'coverage-xml'
 
 jobs:
   commitlint:
@@ -37,8 +46,10 @@ jobs:
           python-version: ${{ inputs.python-version }}
 
       - name: Install tools
+        env:
+          REQUIREMENTS_FILE: ${{ inputs.requirements-file }}
         run: |
-          pip install -r ${{ inputs.requirements-file }} \
+          pip install -r "$REQUIREMENTS_FILE" \
             --only-binary :all:
 
       - name: Lint (ruff)
@@ -64,19 +75,38 @@ jobs:
           done < <(find . -name "*.json" \
             -not -path "./node_modules/*" -not -path "./.git/*" -print0)
 
+      # Inputs travel through env, never interpolated into the script: a
+      # ${{ }} expansion inside run: is a shell injection vector.
       - name: Unit tests (pytest)
+        env:
+          TEST_PATH: ${{ inputs.test-path }}
+          COVERAGE: ${{ inputs.coverage }}
         run: |
-          test_path="${{ inputs.test-path }}"
+          cov_args=()
+          if [ "$COVERAGE" = "true" ]; then
+            cov_args=(--cov=. --cov-report=xml:coverage.xml)
+          fi
           has_logic=$(find . -not -path './.git/*' \
-            -not -path "./${test_path}*" -name '*.py')
+            -not -path "./${TEST_PATH}*" -name '*.py')
           if [ -n "$has_logic" ]; then
-            pytest "$test_path" -v
+            pytest "$TEST_PATH" -v "${cov_args[@]}"
           else
             set +e
-            pytest "$test_path" -v
+            pytest "$TEST_PATH" -v "${cov_args[@]}"
             ec=$?
             set -e
             if [ "$ec" -ne 0 ] && [ "$ec" -ne 4 ] && [ "$ec" -ne 5 ]; then
               exit "$ec"
             fi
           fi
+
+      # sonar-scan.yml runs as a separate job, so the report has to travel
+      # as an artifact rather than on disk.
+      - name: Upload coverage report
+        if: inputs.coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.coverage-artifact }}
+          path: coverage.xml
+          if-no-files-found: error
+          retention-days: 1

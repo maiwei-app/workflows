@@ -10,6 +10,13 @@ on:
         type: string
         required: false
         default: maiwei-app
+      coverage-artifact:
+        # Artifact holding coverage.xml, as uploaded by ci-python.yml. Empty
+        # means no coverage data: Sonar then reports 0% on new code, which
+        # fails a quality gate that requires coverage.
+        type: string
+        required: false
+        default: ''
     secrets:
       sonar-token:
         required: true
@@ -23,6 +30,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download coverage report
+        if: inputs.coverage-artifact != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.coverage-artifact }}
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v8.2.1
         env:
@@ -31,3 +44,4 @@ jobs:
           args: >
             -Dsonar.organization=${{ inputs.sonar-organization }}
             -Dsonar.projectKey=${{ inputs.project-key }}
+            ${{ inputs.coverage-artifact != '' && '-Dsonar.python.coverage.reportPaths=coverage.xml' || '' }}
