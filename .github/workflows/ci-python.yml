@@ -12,6 +12,15 @@ on:
       test-path:
         type: string
         default: 'tests/'
+      coverage:
+        # Requires pytest-cov in the caller's requirements file. Leave off for
+        # repos without tests: the report would be empty and Sonar would read
+        # it as 0% coverage.
+        type: boolean
+        default: false
+      coverage-artifact:
+        type: string
+        default: 'coverage-xml'
 
 jobs:
   commitlint:
@@ -67,16 +76,31 @@ jobs:
       - name: Unit tests (pytest)
         run: |
           test_path="${{ inputs.test-path }}"
+          cov_args=()
+          if [ "${{ inputs.coverage }}" = "true" ]; then
+            cov_args=(--cov=. --cov-report=xml:coverage.xml)
+          fi
           has_logic=$(find . -not -path './.git/*' \
             -not -path "./${test_path}*" -name '*.py')
           if [ -n "$has_logic" ]; then
-            pytest "$test_path" -v
+            pytest "$test_path" -v "${cov_args[@]}"
           else
             set +e
-            pytest "$test_path" -v
+            pytest "$test_path" -v "${cov_args[@]}"
             ec=$?
             set -e
             if [ "$ec" -ne 0 ] && [ "$ec" -ne 4 ] && [ "$ec" -ne 5 ]; then
               exit "$ec"
             fi
           fi
+
+      # sonar-scan.yml runs as a separate job, so the report has to travel
+      # as an artifact rather than on disk.
+      - name: Upload coverage report
+        if: inputs.coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.coverage-artifact }}
+          path: coverage.xml
+          if-no-files-found: error
+          retention-days: 1
