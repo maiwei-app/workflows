@@ -46,8 +46,10 @@ jobs:
           python-version: ${{ inputs.python-version }}
 
       - name: Install tools
+        env:
+          REQUIREMENTS_FILE: ${{ inputs.requirements-file }}
         run: |
-          pip install -r ${{ inputs.requirements-file }} \
+          pip install -r "$REQUIREMENTS_FILE" \
             --only-binary :all:
 
       - name: Lint (ruff)
@@ -73,20 +75,24 @@ jobs:
           done < <(find . -name "*.json" \
             -not -path "./node_modules/*" -not -path "./.git/*" -print0)
 
+      # Inputs travel through env, never interpolated into the script: a
+      # ${{ }} expansion inside run: is a shell injection vector.
       - name: Unit tests (pytest)
+        env:
+          TEST_PATH: ${{ inputs.test-path }}
+          COVERAGE: ${{ inputs.coverage }}
         run: |
-          test_path="${{ inputs.test-path }}"
           cov_args=()
-          if [ "${{ inputs.coverage }}" = "true" ]; then
+          if [ "$COVERAGE" = "true" ]; then
             cov_args=(--cov=. --cov-report=xml:coverage.xml)
           fi
           has_logic=$(find . -not -path './.git/*' \
-            -not -path "./${test_path}*" -name '*.py')
+            -not -path "./${TEST_PATH}*" -name '*.py')
           if [ -n "$has_logic" ]; then
-            pytest "$test_path" -v "${cov_args[@]}"
+            pytest "$TEST_PATH" -v "${cov_args[@]}"
           else
             set +e
-            pytest "$test_path" -v "${cov_args[@]}"
+            pytest "$TEST_PATH" -v "${cov_args[@]}"
             ec=$?
             set -e
             if [ "$ec" -ne 0 ] && [ "$ec" -ne 4 ] && [ "$ec" -ne 5 ]; then
