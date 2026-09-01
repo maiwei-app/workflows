@@ -1,10 +1,12 @@
 name: Lint YAML
 
 on:
+  pull_request:
+    branches: [main]
   workflow_call: {}
 
 jobs:
-  quality:
+  yamllint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,3 +18,23 @@ jobs:
 
       - name: Lint YAML
         run: yamllint -d relaxed --no-warnings .
+
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install actionlint
+        run: |
+          curl -sL --proto =https --proto-redir =https \
+            https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash \
+            -o download-actionlint.bash
+          sha256sum -c <<< \
+            "a96d60132afb74536ff2b55cc784d5c55b0b57980d3d49f962f0b3871447d53a  download-actionlint.bash" \
+            || exit 1
+          bash download-actionlint.bash
+          echo "${PWD}" >> $GITHUB_PATH
+
+      - name: Validate GitHub Actions workflows
+        run: actionlint -color
