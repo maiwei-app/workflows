@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/maiwei-app/workflows/compare/v1.3.0...v1.4.0) (2026-09-02)
+
+
+### Features
+
+* **ci:** prepare the policy checks to run at organization level ([#61](https://github.com/maiwei-app/workflows/issues/61)) ([08a0ec6](https://github.com/maiwei-app/workflows/commit/08a0ec672933bd75b04f16f01e429e548d0aece9))
+
 ## [1.3.0](https://github.com/maiwei-app/workflows/compare/v1.2.1...v1.3.0) (2026-08-31)
 
 
