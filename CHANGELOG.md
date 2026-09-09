@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/maiwei-app/workflows/compare/v1.4.0...v1.5.0) (2026-09-09)
+
+
+### Features
+
+* **ci:** add repo-init check reading sw-checks-init custom property ([#63](https://github.com/maiwei-app/workflows/issues/63)) ([569ac6a](https://github.com/maiwei-app/workflows/commit/569ac6ac627ed84883420f168d67333d18b96e96))
+
 ## [1.4.0](https://github.com/maiwei-app/workflows/compare/v1.3.0...v1.4.0) (2026-09-02)
 
 
