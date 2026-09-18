@@ -1,0 +1,11 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  yaml-testing:
+    uses: maiwei-app/workflows/.github/workflows/lint-yaml.yml@main
