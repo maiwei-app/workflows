@@ -9,3 +9,11 @@ on:
 jobs:
   yaml-testing:
     uses: maiwei-app/workflows/.github/workflows/lint-yaml.yml@main
+
+  quality-gate:
+    needs: yaml-testing
+    uses: maiwei-app/workflows/.github/workflows/sonar-scan.yml@main
+    with:
+      project-key: maiwei-app_workflows
+    secrets:
+      sonar-token: ${{ secrets.SONAR_TOKEN }}
